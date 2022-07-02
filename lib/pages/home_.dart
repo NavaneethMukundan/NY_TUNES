@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:ny_tunes/database/favorite_db.dart';
+import 'package:ny_tunes/database/playlist_db.dart';
 import 'package:ny_tunes/pages/player.dart';
 import 'package:ny_tunes/settings/setting.dart';
 import 'package:ny_tunes/settings/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:permission_handler/permission_handler.dart';
+
+import '../database/favorite_btn.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,6 +24,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     requstPermission();
+    setState(() {});
   }
 
   // @override
@@ -27,7 +32,6 @@ class _HomePageState extends State<HomePage> {
   //   Storage.player.dispose();
   //   super.dispose();
   // }
-
   void requstPermission() {
     Permission.storage.request();
   }
@@ -106,6 +110,12 @@ class _HomePageState extends State<HomePage> {
                       );
                     }
                     HomePage.songs = item.data!;
+                    if (!Favorite.isInitialized) {
+                      Favorite.initialise(item.data!);
+                    }
+                    if (!Playlist.isInitialized) {
+                      Playlist.initialise(item.data!);
+                    }
                     return ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -133,7 +143,184 @@ class _HomePageState extends State<HomePage> {
                                 type: ArtworkType.AUDIO),
                             title: Text(item.data![index].displayNameWOExt),
                             subtitle: Text("${item.data![index].artist}"),
-                            trailing: const Icon(Icons.more_vert_rounded),
+                            trailing: SizedBox(
+                              width: 30,
+                              child: IconButton(
+                                  onPressed: () {
+                                    showModalBottomSheet(
+                                        backgroundColor: Colors.transparent,
+                                        context: context,
+                                        builder: (builder) {
+                                          return Container(
+                                            decoration: const BoxDecoration(
+                                                gradient: LinearGradient(
+                                                    begin: Alignment.topCenter,
+                                                    end: Alignment.bottomCenter,
+                                                    colors: [
+                                                      Color.fromARGB(
+                                                          255, 1, 105, 94),
+                                                      Colors.black,
+                                                      Colors.black,
+                                                    ]),
+                                                borderRadius: BorderRadius.only(
+                                                    topLeft:
+                                                        Radius.circular(25.0),
+                                                    topRight:
+                                                        Radius.circular(25.0))),
+                                            child: SizedBox(
+                                              height: 450,
+                                              child: Column(
+                                                children: [
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Container(
+                                                      height: 200,
+                                                      width: 200,
+                                                      decoration:
+                                                          const BoxDecoration(
+                                                              color: Colors
+                                                                  .transparent),
+                                                      child: QueryArtworkWidget(
+                                                        artworkBorder:
+                                                            BorderRadius
+                                                                .circular(1),
+                                                        artworkWidth: 100,
+                                                        artworkHeight: 400,
+                                                        id: item
+                                                            .data![index].id,
+                                                        type: ArtworkType.AUDIO,
+                                                      )),
+                                                  const SizedBox(
+                                                    height: 20,
+                                                  ),
+                                                  Expanded(
+                                                    child: Text(
+                                                      item.data![index]
+                                                          .displayNameWOExt,
+                                                      style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 20),
+                                                    child: Row(
+                                                      children: [
+                                                        FavorBtn(
+                                                            song: item
+                                                                .data![index]),
+                                                        const Text(
+                                                          'Add to Favorite',
+                                                          style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        )
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                      bottom: 50,
+                                                      right: 220,
+                                                    ),
+                                                    child: ElevatedButton.icon(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: Colors
+                                                                    .transparent),
+                                                        onPressed: () {
+                                                          Navigator.of(context)
+                                                              .pop();
+                                                          showDialog(
+                                                              context: context,
+                                                              builder:
+                                                                  (BuildContext
+                                                                      context) {
+                                                                return Dialog(
+                                                                  shape: RoundedRectangleBorder(
+                                                                      borderRadius:
+                                                                          BorderRadius.circular(
+                                                                              20.0)),
+                                                                  child:
+                                                                      SizedBox(
+                                                                    height: 450,
+                                                                    child:
+                                                                        Padding(
+                                                                      padding: const EdgeInsets
+                                                                              .all(
+                                                                          12.0),
+                                                                      child:
+                                                                          Column(
+                                                                        children: [
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                15,
+                                                                          ),
+                                                                          Container(
+                                                                              height: 100,
+                                                                              width: 100,
+                                                                              decoration: const BoxDecoration(color: Colors.transparent),
+                                                                              child: QueryArtworkWidget(
+                                                                                artworkBorder: BorderRadius.circular(1),
+                                                                                artworkWidth: 100,
+                                                                                artworkHeight: 400,
+                                                                                id: item.data![index].id,
+                                                                                type: ArtworkType.AUDIO,
+                                                                              )),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                          Text(item
+                                                                              .data![index]
+                                                                              .displayNameWOExt),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                          Text(
+                                                                              "Artist :   ${item.data![index].artist}"),
+                                                                          const SizedBox(
+                                                                            height:
+                                                                                10,
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              });
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons.info_outlined,
+                                                          size: 25,
+                                                        ),
+                                                        label: const Text(
+                                                          'About Song',
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 20,
+                                                          ),
+                                                        )),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          );
+                                        });
+                                  },
+                                  icon: const Icon(Icons.more_vert_sharp)),
+                            ),
                           );
                         },
                         separatorBuilder: (ctx, index) {

@@ -36,6 +36,7 @@ class _SearchPageState extends State<SearchPage> {
           title: Padding(
             padding: const EdgeInsets.only(top: 30),
             child: TextField(
+              autofocus: true,
               decoration: const InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -116,8 +117,7 @@ class _SearchPageState extends State<SearchPage> {
 
   int? creatSearchIndex(SongModel data) {
     for (int i = 0; i < HomePage.songs.length; i++) {
-      if (data.id == HomePage.songs[i].id) {
-      }
+      if (data.id == HomePage.songs[i].id) {}
       return i;
     }
     return null;

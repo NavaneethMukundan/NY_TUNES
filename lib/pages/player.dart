@@ -1,6 +1,7 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
+import 'package:ny_tunes/database/favorite_btn.dart';
 import 'package:ny_tunes/settings/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart';
@@ -8,7 +9,6 @@ import 'package:rxdart/rxdart.dart';
 class PlayerPage extends StatefulWidget {
   const PlayerPage({Key? key, required this.song}) : super(key: key);
   final List<SongModel> song;
-  final int currentIndex = 0;
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -20,6 +20,8 @@ class _PlayerPageState extends State<PlayerPage> {
     Storage.player.currentIndexStream.listen((index) {});
     super.initState();
   }
+
+  final int index = Storage.currentindex;
 
   @override
   Widget build(BuildContext context) {
@@ -113,13 +115,21 @@ class _PlayerPageState extends State<PlayerPage> {
                             )),
                       ],
                     ),
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.favorite_border,
-                          color: Colors.white,
-                          size: 25,
-                        )),
+                    FavorBtn(
+                      song: widget.song[Storage.player.currentIndex!],
+                    ),
+                    // IconButton(
+                    //     onPressed: () {},
+                    //     icon: (Favorite.isfavor(
+                    //             widget.song[Storage.player.currentIndex!])
+                    //         ? Icon(
+                    //             Icons.favorite,
+                    //             color: Colors.white,
+                    //           )
+                    //         : Icon(
+                    //             Icons.favorite_border,
+                    //             color: Colors.amber,
+                    //           )))
                   ],
                 ),
                 const SizedBox(
@@ -129,9 +139,10 @@ class _PlayerPageState extends State<PlayerPage> {
                     stream: _durationStateStream,
                     builder: (context, snapshot) {
                       final duractionState = snapshot.data;
-                      final progress = duractionState?.position ?? Duration.zero;
+                      final progress =
+                          duractionState?.position ?? Duration.zero;
                       final total = duractionState?.total ?? Duration.zero;
-        
+
                       return ProgressBar(
                           progress: progress,
                           total: total,
@@ -150,9 +161,10 @@ class _PlayerPageState extends State<PlayerPage> {
                     stream: _durationStateStream,
                     builder: (context, snapshot) {
                       final duractionState = snapshot.data;
-                      final progress = duractionState?.position ?? Duration.zero;
+                      final progress =
+                          duractionState?.position ?? Duration.zero;
                       final total = duractionState?.total ?? Duration.zero;
-        
+
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         mainAxisSize: MainAxisSize.max,
@@ -175,135 +187,143 @@ class _PlayerPageState extends State<PlayerPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(15),
-                          primary: Colors.black,
-                          onPrimary: Colors.white),
-                      onPressed: () {
-                        Storage.player.setShuffleModeEnabled(true);
-                        
-                        //ScaffoldMessenger(child: SnackBar(content: Text('Shuffle Enacled')));
-                      },
-                      child: StreamBuilder<bool>(
-                     //    stream: Storage.player.shuffleModeEnabledStream,
-                        builder: (context, snapshot) {
-                        bool? shuffleState = snapshot.data;
-                        if (shuffleState != null && shuffleState) {
-                          return const Icon(
-                            Icons.shuffle,
-                            color: Colors.teal,
-                            size: 25,
-                          );
-                        } else {
-                          return const Icon(
-                            Icons.shuffle,
-                            size: 25,
-                          );
-                        }
-                      }),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(15),
-                            primary: Colors.black,
-                            onPrimary: Colors.white),
-                        onPressed: () async {
-                          if (Storage.player.hasPrevious) {
-                            await Storage.player.seekToPrevious();
-                            setState(() {});
-                          } else {
-                            Storage.player.play();
-                            setState(() {});
-                          }
-                        },
-                        child: const Icon(Icons.skip_previous_rounded,
-                            color: Colors.white, size: 45)),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          padding: const EdgeInsets.all(15),
-                          primary: Colors.black,
-                          onPrimary: Colors.white),
-                      onPressed: () async {
-                        if (Storage.player.playing) {
-                          await Storage.player.pause();
-                          setState(() {});
-                        } else {
-                          if (Storage.player.currentIndex != null) {
-                            await Storage.player.play();
-                          }
-                          setState(() {});
-                        }
-                      },
-                      child: StreamBuilder<bool>(
-                          stream: Storage.player.playingStream,
-                          builder: (context, snapshot) {
-                            bool? playingState = snapshot.data;
-                            if (playingState != null && playingState) {
-                              return const Icon(
-                                Icons.pause_circle_filled,
-                                size: 55,
-                              );
-                            } else {
-                              return const Icon(
-                                Icons.play_circle_fill_rounded,
-                                size: 55,
-                              );
-                            }
-                          }),
-                    ),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: const CircleBorder(),
-                            padding: const EdgeInsets.all(15),
-                            primary: Colors.black,
-                            onPrimary: Colors.white),
-                        onPressed: () async {
-                          if (Storage.player.hasNext) {
-                            await Storage.player.seekToNext();
-                            setState(() {});
-                          } else {
-                            Storage.currentindex = 0;
-                            await Storage.player.play();
-                            setState(() {});
-                          }
-                        },
-                        child: const Icon(Icons.skip_next_rounded,
-                            color: Colors.white, size: 45)),
-                           
-                    ElevatedButton(
+                    Expanded(
+                      child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                             shape: const CircleBorder(),
                             padding: const EdgeInsets.all(15),
                             primary: Colors.black,
                             onPrimary: Colors.white),
                         onPressed: () {
-                          Storage.player.loopMode == LoopMode.one
-                              ? Storage.player.setLoopMode(LoopMode.all)
-                              : Storage.player.setLoopMode(LoopMode.one);
+                          Storage.player.setShuffleModeEnabled(true);
+
+                          //ScaffoldMessenger(child: SnackBar(content: Text('Shuffle Enacled')));
                         },
-                        child: StreamBuilder<LoopMode>(
-                          stream: Storage.player.loopModeStream,
-                          builder: (context, snapshot) {
-                            final loopMode = snapshot.data;
-                            if (LoopMode.one == loopMode) {
-                              return const Icon(
-                                Icons.repeat_one,
-                                color: Colors.teal,
-                                size: 25,
-                              );
+                        child: StreamBuilder<bool>(
+                            //    stream: Storage.player.shuffleModeEnabledStream,
+                            builder: (context, snapshot) {
+                          bool? shuffleState = snapshot.data;
+                          if (shuffleState != null && shuffleState) {
+                            return const Icon(
+                              Icons.shuffle,
+                              color: Colors.teal,
+                              size: 25,
+                            );
+                          } else {
+                            return const Icon(
+                              Icons.shuffle,
+                              size: 25,
+                            );
+                          }
+                        }),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
+                              primary: Colors.black,
+                              onPrimary: Colors.white),
+                          onPressed: () async {
+                            if (Storage.player.hasPrevious) {
+                              await Storage.player.seekToPrevious();
+                              setState(() {});
                             } else {
-                              return const Icon(
-                                Icons.repeat,
-                                size: 30,
-                              );
+                              Storage.player.play();
+                              setState(() {});
                             }
                           },
-                        )),
-                         
+                          child: const Icon(Icons.skip_previous_rounded,
+                              color: Colors.white, size: 45)),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: const CircleBorder(),
+                            padding: const EdgeInsets.all(15),
+                            primary: Colors.black,
+                            onPrimary: Colors.white),
+                        onPressed: () async {
+                          if (Storage.player.playing) {
+                            await Storage.player.pause();
+                            setState(() {});
+                          } else {
+                            if (Storage.player.currentIndex != null) {
+                              await Storage.player.play();
+                            }
+                            setState(() {});
+                          }
+                        },
+                        child: StreamBuilder<bool>(
+                            stream: Storage.player.playingStream,
+                            builder: (context, snapshot) {
+                              bool? playingState = snapshot.data;
+                              if (playingState != null && playingState) {
+                                return const Icon(
+                                  Icons.pause_circle_filled,
+                                  size: 55,
+                                );
+                              } else {
+                                return const Icon(
+                                  Icons.play_circle_fill_rounded,
+                                  size: 55,
+                                );
+                              }
+                            }),
+                      ),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
+                              primary: Colors.black,
+                              onPrimary: Colors.white),
+                          onPressed: () async {
+                            if (Storage.player.hasNext) {
+                              await Storage.player.seekToNext();
+                              setState(() {});
+                            } else {
+                              Storage.currentindex = 0;
+                              await Storage.player.play();
+                              setState(() {});
+                            }
+                          },
+                          child: const Icon(Icons.skip_next_rounded,
+                              color: Colors.white, size: 45)),
+                    ),
+                    Expanded(
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              shape: const CircleBorder(),
+                              padding: const EdgeInsets.all(15),
+                              primary: Colors.black,
+                              onPrimary: Colors.white),
+                          onPressed: () {
+                            Storage.player.loopMode == LoopMode.one
+                                ? Storage.player.setLoopMode(LoopMode.all)
+                                : Storage.player.setLoopMode(LoopMode.one);
+                          },
+                          child: StreamBuilder<LoopMode>(
+                            stream: Storage.player.loopModeStream,
+                            builder: (context, snapshot) {
+                              final loopMode = snapshot.data;
+                              if (LoopMode.one == loopMode) {
+                                return const Icon(
+                                  Icons.repeat_one,
+                                  color: Colors.teal,
+                                  size: 25,
+                                );
+                              } else {
+                                return const Icon(
+                                  Icons.repeat,
+                                  size: 30,
+                                );
+                              }
+                            },
+                          )),
+                    ),
                   ],
                 )
               ],
