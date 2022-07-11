@@ -18,6 +18,7 @@ class MusicModelAdapter extends TypeAdapter<MusicModel> {
     };
     return MusicModel(
       name: fields[0] as String,
+      songData: [],
     );
   }
 

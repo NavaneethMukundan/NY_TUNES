@@ -8,5 +8,22 @@ class MusicModel extends HiveObject {
   @HiveField(0)
   String name;
 
-  MusicModel({required this.name, this.id});
+  @HiveField(1)
+  List<int> songData;
+
+  MusicModel({required this.name, this.id, required this.songData});
+
+  add(int id) {
+    songData.add(id);
+    save();
+  }
+
+  deleteData(int id) {
+    songData.remove(id);
+    save();
+  }
+
+  bool isValueIn(int id) {
+    return songData.contains(id);
+  }
 }

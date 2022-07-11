@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ny_tunes/database/playlist_database.dart';
 import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/navigation.dart';
-import 'package:ny_tunes/pages/playlist.dart';
+import 'package:ny_tunes/pages/playlist_songs.dart';
 
 ValueNotifier<List<MusicModel>> temp = ValueNotifier([]);
 
@@ -10,7 +9,7 @@ class PlaylistSearchPage extends StatefulWidget {
   const PlaylistSearchPage({
     Key? key,
   }) : super(key: key);
-
+  // final MusicModel musicModel;
   @override
   State<PlaylistSearchPage> createState() => _PlaylistSearchPageState();
 }
@@ -38,8 +37,7 @@ class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
           backgroundColor: Colors.transparent,
           leading: IconButton(
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (ctx) => const NavigationPage()));
+                Navigator.of(context).pop();
               },
               icon: const Icon(
                 Icons.arrow_back_ios_new_rounded,
@@ -62,7 +60,8 @@ class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
                 if (value != null && value.isNotEmpty) {
                   temp.value.clear();
                   for (MusicModel item in musicListNotifier.value) {
-                    if (item.name.toLowerCase().contains(value.toLowerCase())) {
+                    if (item.name.toLowerCase().contains(value.toLowerCase()) ||
+                        item.name.contains(value)) {
                       temp.value.add(item);
                     }
                   }
@@ -98,8 +97,12 @@ class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
                                 style: const TextStyle(color: Colors.white),
                               ),
                               onTap: () {
-                                Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (ctx) => const PlaylistPage()));
+                                Navigator.of(context)
+                                    .pushReplacement(MaterialPageRoute(
+                                        builder: (ctx) => PlaylistData(
+                                              playlist: playlistData[index],
+                                              folderindex: index,
+                                            )));
                               },
                             );
                           },

@@ -5,16 +5,16 @@ import 'package:ny_tunes/database/playlist_model.dart';
 ValueNotifier<List<MusicModel>> musicListNotifier = ValueNotifier([]);
 
 Future<void> addPlaylist(MusicModel value) async {
-  final playlistDB = await Hive.openBox<MusicModel>('playlistDB');
+  final playlistDB = Hive.box<MusicModel>('playlist');
   final id = await playlistDB.add(value);
   value.id = id;
 
-  musicListNotifier.value.add(value);
-  musicListNotifier.notifyListeners();
+  // musicListNotifier.value.add(value);
+  // musicListNotifier.notifyListeners();
 }
 
 Future<void> getAllDetails() async {
-  final playlistDB = await Hive.openBox<MusicModel>('playlistDB');
+  final playlistDB = Hive.box<MusicModel>('playlist');
   musicListNotifier.value.clear();
 
   musicListNotifier.value.addAll(playlistDB.values);
@@ -22,7 +22,7 @@ Future<void> getAllDetails() async {
 }
 
 Future<void> deletePlaylist(int index) async {
-  final playlistDB = await Hive.openBox<MusicModel>('playlistDB');
+  final playlistDB = Hive.box<MusicModel>('playlist');
   await playlistDB.deleteAt(index);
   getAllDetails();
 }

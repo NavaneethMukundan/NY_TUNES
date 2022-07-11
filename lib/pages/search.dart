@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ny_tunes/pages/home_.dart';
+import 'package:ny_tunes/pages/mini_player.dart';
 import 'package:ny_tunes/pages/player.dart';
 import 'package:ny_tunes/settings/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -29,8 +30,10 @@ class _SearchPageState extends State<SearchPage> {
           ])),
       child: Scaffold(
         backgroundColor: Colors.transparent,
+        extendBody: true,
         appBar: AppBar(
           toolbarHeight: 90,
+          automaticallyImplyLeading: false,
           elevation: 0,
           backgroundColor: Colors.transparent,
           title: Padding(
@@ -92,12 +95,12 @@ class _SearchPageState extends State<SearchPage> {
                                   final searchIndex = creatSearchIndex(data);
                                   FocusScope.of(context).unfocus();
                                   Storage.player.setAudioSource(
-                                      Storage.createSongList(temp.value),
+                                      Storage.createSongList(HomePage.songs),
                                       initialIndex: searchIndex);
                                   Storage.player.play();
                                   Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (ctx) =>
-                                          PlayerPage(song: temp.value)));
+                                      builder: (ctx) => PlayerPage(
+                                          playersong: HomePage.songs)));
                                 },
                               ),
                             );
@@ -106,10 +109,16 @@ class _SearchPageState extends State<SearchPage> {
                             return const Divider();
                           },
                           itemCount: temp.value.length);
-                    })
+                    }),
               ],
             ),
           ),
+        ),
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(bottom: 45),
+          child: (Storage.player.currentIndex != null)
+              ? const MiniPlayerPage(songs: [])
+              : const SizedBox(),
         ),
       ),
     );
@@ -117,8 +126,9 @@ class _SearchPageState extends State<SearchPage> {
 
   int? creatSearchIndex(SongModel data) {
     for (int i = 0; i < HomePage.songs.length; i++) {
-      if (data.id == HomePage.songs[i].id) {}
-      return i;
+      if (data.id == HomePage.songs[i].id) {
+        return i;
+      }
     }
     return null;
   }

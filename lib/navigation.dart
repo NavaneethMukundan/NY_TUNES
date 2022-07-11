@@ -3,7 +3,6 @@ import 'package:ny_tunes/pages/favorite.dart';
 import 'package:ny_tunes/pages/home_.dart';
 import 'package:ny_tunes/pages/playlist.dart';
 import 'package:ny_tunes/pages/search.dart';
-import 'package:ny_tunes/settings/setting.dart';
 import 'package:responsive_navigation_bar/responsive_navigation_bar.dart';
 
 class NavigationPage extends StatefulWidget {
@@ -20,18 +19,18 @@ class _NavigationPageState extends State<NavigationPage> {
     if (mounted) setState(() {});
   }
 
-  final _pages =  [
-     const HomePage(),
+  final _pages = [
+    const HomePage(),
     const SearchPage(),
     const FavoritePage(),
     const PlaylistPage(),
-    const SettingPage(),
   ];
+  final int index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-       height: double.infinity,
+      height: double.infinity,
       decoration: const BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.topCenter,
@@ -43,32 +42,38 @@ class _NavigationPageState extends State<NavigationPage> {
           ])),
       child: Scaffold(
         extendBody: true,
-        body:
-         _pages[_currentIndex],
-        bottomNavigationBar: ResponsiveNavigationBar(
-          backgroundColor: Colors.transparent,
-          outerPadding:const EdgeInsets.all(1),
-          backgroundBlur: 1,
-          fontSize: 30,
-          borderRadius: 2,
-          activeIconColor: Colors.teal,
-          activeButtonFlexFactor: 80,
-          inactiveButtonsFlexFactor: 70,
-          selectedIndex: _currentIndex,
-          onTabChange: (int index) {
-            _currentIndex = index;
-            changeTab();
-          },
-          navigationBarButtons: const <NavigationBarButton>[
-            NavigationBarButton(
-                icon: Icons.home_outlined, backgroundColor: Colors.transparent),
-            NavigationBarButton(
-                icon: Icons.search, backgroundColor: Colors.transparent),
-            NavigationBarButton(
-                icon: Icons.favorite_outline_rounded ,backgroundColor: Colors.transparent),
-            NavigationBarButton(
-                icon: Icons.playlist_add_rounded,
-                backgroundColor: Colors.transparent),
+        body: _pages[_currentIndex],
+        bottomNavigationBar: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ResponsiveNavigationBar(
+              backgroundColor: Colors.transparent,
+              outerPadding: const EdgeInsets.all(1),
+              backgroundBlur: 1,
+              fontSize: 30,
+              borderRadius: 2,
+              activeIconColor: Colors.teal,
+              activeButtonFlexFactor: 80,
+              inactiveButtonsFlexFactor: 70,
+              selectedIndex: _currentIndex,
+              onTabChange: (int index) {
+                _currentIndex = index;
+                changeTab();
+              },
+              navigationBarButtons: const <NavigationBarButton>[
+                NavigationBarButton(
+                    icon: Icons.home_outlined,
+                    backgroundColor: Colors.transparent),
+                NavigationBarButton(
+                    icon: Icons.search, backgroundColor: Colors.transparent),
+                NavigationBarButton(
+                    icon: Icons.favorite_outline_rounded,
+                    backgroundColor: Colors.transparent),
+                NavigationBarButton(
+                    icon: Icons.playlist_add_rounded,
+                    backgroundColor: Colors.transparent),
+              ],
+            ),
           ],
         ),
       ),

@@ -2,13 +2,14 @@ import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:ny_tunes/database/favorite_btn.dart';
+import 'package:ny_tunes/database/playlist_database.dart';
 import 'package:ny_tunes/settings/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PlayerPage extends StatefulWidget {
-  const PlayerPage({Key? key, required this.song}) : super(key: key);
-  final List<SongModel> song;
+  const PlayerPage({Key? key, required this.playersong}) : super(key: key);
+  final List<SongModel> playersong;
 
   @override
   State<PlayerPage> createState() => _PlayerPageState();
@@ -50,7 +51,10 @@ class _PlayerPageState extends State<PlayerPage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.of(context).pop();
+                          setState(() {
+                            Navigator.of(context).pop();
+                          });
+                          musicListNotifier.notifyListeners();
                         },
                         icon: const Icon(
                           Icons.keyboard_arrow_down_rounded,
@@ -84,7 +88,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       artworkBorder: BorderRadius.circular(1),
                       artworkWidth: 100,
                       artworkHeight: 400,
-                      id: widget.song[Storage.player.currentIndex!].id,
+                      id: widget.playersong[Storage.player.currentIndex!].id,
                       type: ArtworkType.AUDIO,
                     )),
                 const SizedBox(
@@ -97,7 +101,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          widget.song[Storage.player.currentIndex!]
+                          widget.playersong[Storage.player.currentIndex!]
                               .displayNameWOExt,
                           style: const TextStyle(
                             color: Colors.white,
@@ -108,7 +112,7 @@ class _PlayerPageState extends State<PlayerPage> {
                           height: 15,
                         ),
                         Text(
-                            "${widget.song[Storage.player.currentIndex!].artist}",
+                            "${widget.playersong[Storage.player.currentIndex!].artist}",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 10,
@@ -116,7 +120,7 @@ class _PlayerPageState extends State<PlayerPage> {
                       ],
                     ),
                     FavorBtn(
-                      song: widget.song[Storage.player.currentIndex!],
+                      song: widget.playersong[Storage.player.currentIndex!],
                     ),
                     // IconButton(
                     //     onPressed: () {},

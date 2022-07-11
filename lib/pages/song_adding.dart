@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/database/playlist_db.dart';
+import 'package:ny_tunes/database/playlist_model.dart';
 import 'package:ny_tunes/pages/home_.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class SongListPage extends StatefulWidget {
-  const SongListPage({Key? key}) : super(key: key);
-  // final List<SongModel> song;
+  const SongListPage({Key? key, required this.playlist}) : super(key: key);
+
+  final MusicModel playlist;
   @override
   State<SongListPage> createState() => _SongListPageState();
 }
@@ -53,6 +54,7 @@ class _SongListPageState extends State<SongListPage> {
                           child: IconButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
+                                setState(() {});
                               },
                               icon: const Icon(
                                 Icons.arrow_forward_rounded,
@@ -103,6 +105,7 @@ class _SongListPageState extends State<SongListPage> {
                                   trailing: IconButton(
                                       onPressed: () {
                                         playlistCheck(item.data![index]);
+                                        //musicListNotifier.notifyListeners();
                                       },
                                       icon: const Icon(Icons.add)),
                                 );
@@ -119,8 +122,8 @@ class _SongListPageState extends State<SongListPage> {
   }
 
   void playlistCheck(SongModel data) {
-    if (!Playlist.isplaylist(data)) {
-      Playlist.add(data);
+    if (!widget.playlist.isValueIn(data.id)) {
+      widget.playlist.add(data.id);
       const snackbar = SnackBar(
           backgroundColor: Colors.black,
           content: Text(
@@ -128,7 +131,6 @@ class _SongListPageState extends State<SongListPage> {
             style: TextStyle(color: Colors.white),
           ));
       ScaffoldMessenger.of(context).showSnackBar(snackbar);
-      setState(() {});
     }
   }
 }

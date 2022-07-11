@@ -17,6 +17,7 @@ class _FavorBtnState extends State<FavorBtn> {
           setState(() {});
           if (Favorite.isfavor(widget.song)) {
             Favorite.delete(widget.song.id);
+            Favorite.favoriteSong.notifyListeners();
             const snackbar = SnackBar(
                 backgroundColor: Colors.black,
                 content: Text(
