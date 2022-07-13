@@ -17,6 +17,7 @@ class PlaylistSearchPage extends StatefulWidget {
 class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
   @override
   Widget build(BuildContext context) {
+    getAllDetails();
     return Container(
       height: double.infinity,
       decoration: const BoxDecoration(
@@ -60,8 +61,7 @@ class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
                 if (value != null && value.isNotEmpty) {
                   temp.value.clear();
                   for (MusicModel item in musicListNotifier.value) {
-                    if (item.name.toLowerCase().contains(value.toLowerCase()) ||
-                        item.name.contains(value)) {
+                    if (item.name.toLowerCase().contains(value.toLowerCase())) {
                       temp.value.add(item);
                     }
                   }
@@ -100,8 +100,8 @@ class _PlaylistSearchPageState extends State<PlaylistSearchPage> {
                                 Navigator.of(context)
                                     .pushReplacement(MaterialPageRoute(
                                         builder: (ctx) => PlaylistData(
-                                              playlist: playlistData[index],
                                               folderindex: index,
+                                              playlist: data,
                                             )));
                               },
                             );

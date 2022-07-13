@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:ny_tunes/database/playlist_database.dart';
 import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/pages/mini_player.dart';
 import 'package:ny_tunes/pages/playlist_search.dart';
 import 'package:ny_tunes/pages/playlist_songs.dart';
-import '../settings/storage.dart';
 
 class PlaylistPage extends StatefulWidget {
   const PlaylistPage({
@@ -20,7 +18,6 @@ final nameController = TextEditingController();
 class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
-    //getAllDetails();
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -188,7 +185,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                   topRight:
                                                       Radius.circular(25.0))),
                                           child: SizedBox(
-                                            height: 350,
+                                            height: 300,
                                             child: Column(
                                               children: [
                                                 Image.asset(
@@ -206,29 +203,38 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                 Padding(
                                                   padding:
                                                       const EdgeInsets.only(
-                                                          right: 200, top: 90),
-                                                  child: ElevatedButton.icon(
-                                                      style: ElevatedButton
-                                                          .styleFrom(
-                                                              primary: Colors
-                                                                  .transparent),
-                                                      onPressed: () {
-                                                        deletePlaylist(index);
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      icon: const Icon(
-                                                        Icons
-                                                            .delete_outline_outlined,
-                                                        size: 25,
-                                                      ),
-                                                      label: const Text(
-                                                        'Remove Playlist',
-                                                        style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 20,
-                                                        ),
-                                                      )),
+                                                          top: 30),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.start,
+                                                    children: [
+                                                      ElevatedButton.icon(
+                                                          style: ElevatedButton
+                                                              .styleFrom(
+                                                                  primary: Colors
+                                                                      .transparent),
+                                                          onPressed: () {
+                                                            deletePlaylist(
+                                                                index);
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pop();
+                                                          },
+                                                          icon: const Icon(
+                                                            Icons
+                                                                .delete_outline_outlined,
+                                                            size: 25,
+                                                          ),
+                                                          label: const Text(
+                                                            'Remove Playlist',
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 20,
+                                                            ),
+                                                          )),
+                                                    ],
+                                                  ),
                                                 ),
                                               ],
                                             ),
@@ -267,12 +273,6 @@ class _PlaylistPageState extends State<PlaylistPage> {
               ],
             ),
           )),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 45),
-          child: (Storage.player.currentIndex != null)
-              ? const MiniPlayerPage(songs: [])
-              : const SizedBox(),
         ),
       ),
     );

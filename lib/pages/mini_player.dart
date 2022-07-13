@@ -1,19 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:ny_tunes/pages/home_.dart';
 import 'package:ny_tunes/pages/player.dart';
-import 'package:ny_tunes/settings/storage.dart';
+import 'package:ny_tunes/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
-import '../settings/storage.dart';
+import '../storage.dart';
 
 class MiniPlayerPage extends StatefulWidget {
-  const MiniPlayerPage({Key? key, required this.songs}) : super(key: key);
+  const MiniPlayerPage({
+    Key? key,
+  }) : super(key: key);
 
-  final List<SongModel> songs;
   @override
   State<MiniPlayerPage> createState() => _MiniPlayerPageState();
 }
 
 class _MiniPlayerPageState extends State<MiniPlayerPage> {
+  @override
+  void initState() {
+    Storage.player.currentIndexStream.listen((index) {
+      if (index != null && mounted) {
+        setState(() {});
+      }
+    });
+    super.initState();
+  }
+
+  final List<SongModel> song = [];
+  final index = Storage.player.currentIndex!;
   @override
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
@@ -21,14 +34,15 @@ class _MiniPlayerPageState extends State<MiniPlayerPage> {
         duration: const Duration(milliseconds: 500),
         color: const Color.fromARGB(255, 27, 27, 27),
         width: deviceSize.width,
-        height: 80,
+        height: 70,
         child: ListTile(
           onTap: () {
-            Storage.player.setAudioSource(
-                Storage.createSongList(HomePage.songs),
-                initialIndex: Storage.player.currentIndex);
+            Storage.player.setAudioSource(Storage.createSongList(song),
+                initialIndex: index);
             Navigator.of(context).push(MaterialPageRoute(
-                builder: (ctx) => PlayerPage(playersong: HomePage.songs)));
+                builder: (ctx) => PlayerPage(
+                      playersong: HomePage.songs,
+                    )));
           },
           iconColor: Colors.white,
           textColor: Colors.white,

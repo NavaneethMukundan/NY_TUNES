@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:ny_tunes/database/favorite_btn.dart';
 import 'package:ny_tunes/database/favorite_db.dart';
-import 'package:ny_tunes/pages/mini_player.dart';
 import 'package:ny_tunes/pages/player.dart';
-import 'package:ny_tunes/settings/storage.dart';
+import 'package:ny_tunes/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 class FavoritePage extends StatefulWidget {
@@ -41,15 +40,18 @@ class _FavoritePageState extends State<FavoritePage> {
                   const SizedBox(
                     height: 15,
                   ),
-                  const Padding(
-                    padding: EdgeInsets.only(right: 180),
-                    child: Text(
-                      'Liked Songs',
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold),
-                    ),
+                  Row(
+                    children: const [
+                      Expanded(
+                        child: Text(
+                          'Liked Songs',
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ],
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
@@ -118,12 +120,6 @@ class _FavoritePageState extends State<FavoritePage> {
               ),
             ),
           ),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 45),
-          child: (Storage.player.currentIndex != null)
-              ? const MiniPlayerPage(songs: [])
-              : const SizedBox(),
         ),
       ),
     );

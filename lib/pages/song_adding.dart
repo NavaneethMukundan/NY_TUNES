@@ -37,31 +37,27 @@ class _SongListPageState extends State<SongListPage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         const Center(
-                          child: Expanded(
-                            child: Text(
-                              'Add Songs ',
-                              style: TextStyle(
-                                  fontSize: 25,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+                          child: Text(
+                            'Add Songs ',
+                            style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
                           ),
                         ),
                         const SizedBox(
                           width: 190,
                         ),
-                        Expanded(
-                          child: IconButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                                setState(() {});
-                              },
-                              icon: const Icon(
-                                Icons.arrow_forward_rounded,
-                                color: Colors.white,
-                                size: 30,
-                              )),
-                        )
+                        IconButton(
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                              setState(() {});
+                            },
+                            icon: const Icon(
+                              Icons.arrow_forward_rounded,
+                              color: Colors.white,
+                              size: 30,
+                            ))
                       ],
                     ),
                     const SizedBox(

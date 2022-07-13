@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ny_tunes/pages/home_.dart';
-import 'package:ny_tunes/pages/mini_player.dart';
 import 'package:ny_tunes/pages/player.dart';
-import 'package:ny_tunes/settings/storage.dart';
+import 'package:ny_tunes/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 
 ValueNotifier<List<SongModel>> temp = ValueNotifier([]);
@@ -113,12 +112,6 @@ class _SearchPageState extends State<SearchPage> {
               ],
             ),
           ),
-        ),
-        floatingActionButton: Padding(
-          padding: const EdgeInsets.only(bottom: 45),
-          child: (Storage.player.currentIndex != null)
-              ? const MiniPlayerPage(songs: [])
-              : const SizedBox(),
         ),
       ),
     );

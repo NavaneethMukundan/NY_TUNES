@@ -13,7 +13,7 @@ class MusicModel extends HiveObject {
 
   MusicModel({required this.name, this.id, required this.songData});
 
-  add(int id) {
+  add(int id) async {
     songData.add(id);
     save();
   }
