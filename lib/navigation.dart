@@ -50,42 +50,48 @@ class _NavigationPageState extends State<NavigationPage> {
         bottomNavigationBar: ValueListenableBuilder(
             valueListenable: Favorite.favoriteSong,
             builder: (BuildContext ctx, List<SongModel> music, Widget? child) {
-              return Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  (Storage.player.currentIndex != null)
-                      ? const MiniPlayerPage()
-                      : const SizedBox(),
-                  ResponsiveNavigationBar(
-                    backgroundColor: Colors.transparent,
-                    outerPadding: const EdgeInsets.all(1),
-                    backgroundBlur: 1,
-                    fontSize: 30,
-                    borderRadius: 2,
-                    activeIconColor: Colors.teal,
-                    activeButtonFlexFactor: 80,
-                    inactiveButtonsFlexFactor: 70,
-                    selectedIndex: _currentIndex,
-                    onTabChange: (int index) {
-                      _currentIndex = index;
-                      changeTab();
-                    },
-                    navigationBarButtons: const <NavigationBarButton>[
-                      NavigationBarButton(
-                          icon: Icons.home_outlined,
-                          backgroundColor: Colors.transparent),
-                      NavigationBarButton(
-                          icon: Icons.search,
-                          backgroundColor: Colors.transparent),
-                      NavigationBarButton(
-                          icon: Icons.favorite_outline_rounded,
-                          backgroundColor: Colors.transparent),
-                      NavigationBarButton(
-                          icon: Icons.playlist_add_rounded,
-                          backgroundColor: Colors.transparent),
-                    ],
-                  ),
-                ],
+              return SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      children: [
+                        (Storage.player.currentIndex != null)
+                            ? const MiniPlayerPage()
+                            : const SizedBox(),
+                      ],
+                    ),
+                    ResponsiveNavigationBar(
+                      backgroundColor: Colors.transparent,
+                      outerPadding: const EdgeInsets.all(1),
+                      backgroundBlur: 1,
+                      fontSize: 30,
+                      borderRadius: 2,
+                      activeIconColor: Colors.teal,
+                      activeButtonFlexFactor: 80,
+                      inactiveButtonsFlexFactor: 70,
+                      selectedIndex: _currentIndex,
+                      onTabChange: (int index) {
+                        _currentIndex = index;
+                        changeTab();
+                      },
+                      navigationBarButtons: const <NavigationBarButton>[
+                        NavigationBarButton(
+                            icon: Icons.home_outlined,
+                            backgroundColor: Colors.transparent),
+                        NavigationBarButton(
+                            icon: Icons.search,
+                            backgroundColor: Colors.transparent),
+                        NavigationBarButton(
+                            icon: Icons.favorite_outline_rounded,
+                            backgroundColor: Colors.transparent),
+                        NavigationBarButton(
+                            icon: Icons.playlist_add_rounded,
+                            backgroundColor: Colors.transparent),
+                      ],
+                    ),
+                  ],
+                ),
               );
             }),
       ),

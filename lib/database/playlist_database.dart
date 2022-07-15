@@ -6,8 +6,8 @@ ValueNotifier<List<MusicModel>> musicListNotifier = ValueNotifier([]);
 
 Future<void> addPlaylist(MusicModel value) async {
   final playlistDB = Hive.box<MusicModel>('playlist');
-  final id = await playlistDB.add(value);
-  value.id = id;
+  await playlistDB.add(value);
+  // value.id = id;
 
   // musicListNotifier.value.add(value);
   // musicListNotifier.notifyListeners();

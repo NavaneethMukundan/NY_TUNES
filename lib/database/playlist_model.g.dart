@@ -18,16 +18,18 @@ class MusicModelAdapter extends TypeAdapter<MusicModel> {
     };
     return MusicModel(
       name: fields[0] as String,
-      songData: [],
+      songData: (fields[1] as List).cast<int>(),
     );
   }
 
   @override
   void write(BinaryWriter writer, MusicModel obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.name);
+      ..write(obj.name)
+      ..writeByte(1)
+      ..write(obj.songData);
   }
 
   @override

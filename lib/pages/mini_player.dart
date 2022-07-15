@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/pages/home_.dart';
 import 'package:ny_tunes/pages/player.dart';
 import 'package:ny_tunes/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
@@ -25,8 +24,6 @@ class _MiniPlayerPageState extends State<MiniPlayerPage> {
     super.initState();
   }
 
-  final List<SongModel> song = [];
-  final index = Storage.player.currentIndex!;
   @override
   Widget build(BuildContext context) {
     Size deviceSize = MediaQuery.of(context).size;
@@ -37,17 +34,18 @@ class _MiniPlayerPageState extends State<MiniPlayerPage> {
         height: 70,
         child: ListTile(
           onTap: () {
-            Storage.player.setAudioSource(Storage.createSongList(song),
-                initialIndex: index);
+            // Storage.player.setAudioSource(
+            //     Storage.createSongList(Storage.songCopy),
+            //     initialIndex: Storage.player.currentIndex);
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (ctx) => PlayerPage(
-                      playersong: HomePage.songs,
+                      playersong: Storage.playingSongs,
                     )));
           },
           iconColor: Colors.white,
           textColor: Colors.white,
           leading: Padding(
-            padding: const EdgeInsets.only(left: 20),
+            padding: const EdgeInsets.only(left: 5),
             child: Container(
                 height: 55,
                 width: 55,
@@ -58,14 +56,15 @@ class _MiniPlayerPageState extends State<MiniPlayerPage> {
                   artworkBorder: BorderRadius.circular(10),
                   artworkWidth: 100,
                   artworkHeight: 400,
-                  id: HomePage.songs[Storage.player.currentIndex!].id,
+                  id: Storage.playingSongs[Storage.player.currentIndex!].id,
                   type: ArtworkType.AUDIO,
                 )),
           ),
           title: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Text(
-              HomePage.songs[Storage.player.currentIndex!].displayNameWOExt,
+              Storage
+                  .playingSongs[Storage.player.currentIndex!].displayNameWOExt,
               style: const TextStyle(
                   fontSize: 16, overflow: TextOverflow.ellipsis),
             ),
@@ -73,7 +72,7 @@ class _MiniPlayerPageState extends State<MiniPlayerPage> {
           subtitle: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: Text(
-              "${HomePage.songs[Storage.player.currentIndex!].artist}",
+              "${Storage.playingSongs[Storage.player.currentIndex!].artist}",
               style: const TextStyle(
                 overflow: TextOverflow.ellipsis,
                 fontSize: 11,

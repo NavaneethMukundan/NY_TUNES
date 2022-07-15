@@ -55,7 +55,7 @@ class _PlayerPageState extends State<PlayerPage> {
                   children: [
                     IconButton(
                         onPressed: () {
-                          Navigator.of(context).pop(context);
+                          Navigator.of(context).pop();
                           Favorite.favoriteSong.notifyListeners();
                         },
                         icon: const Icon(
@@ -229,11 +229,9 @@ class _PlayerPageState extends State<PlayerPage> {
                             if (Storage.player.hasPrevious) {
                               await Storage.player.seekToPrevious();
                               Storage.player.play();
-                              setState(() {});
                             } else {
                               Storage.player.play();
                             }
-                            setState(() {});
                           },
                           child: const Icon(Icons.skip_previous_rounded,
                               color: Colors.white, size: 45)),
@@ -248,12 +246,10 @@ class _PlayerPageState extends State<PlayerPage> {
                         onPressed: () async {
                           if (Storage.player.playing) {
                             await Storage.player.pause();
-                            setState(() {});
                           } else {
                             if (Storage.player.currentIndex != null) {
                               await Storage.player.play();
                             }
-                            setState(() {});
                           }
                         },
                         child: StreamBuilder<bool>(
@@ -285,11 +281,9 @@ class _PlayerPageState extends State<PlayerPage> {
                             if (Storage.player.hasNext) {
                               await Storage.player.seekToNext();
                               await Storage.player.play();
-                              setState(() {});
                             } else {
                               await Storage.player.play();
                             }
-                            setState(() {});
                           },
                           child: const Icon(Icons.skip_next_rounded,
                               color: Colors.white, size: 45)),

@@ -175,9 +175,30 @@ class _SettingPageState extends State<SettingPage> {
   }
 
   void clearDatabase() {
-    Hive.box<int>('favoriteDB').clear();
-    Hive.box<MusicModel>('playlist').clear();
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => const SplashScreen()));
+    AlertDialog alert = AlertDialog(
+      title: const Text("Alert !"),
+      content: const Text("Would you like to Reset Yout App?"),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+            child: const Text('cancel')),
+        TextButton(
+            onPressed: () {
+              Hive.box<int>('favoriteDB').clear();
+              Hive.box<MusicModel>('playlist').clear();
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (ctx) => const SplashScreen()));
+            },
+            child: const Text('Continue')),
+      ],
+    );
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return alert;
+      },
+    );
   }
 }

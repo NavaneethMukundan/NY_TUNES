@@ -118,36 +118,35 @@ class _HomePageState extends State<HomePage> {
                                 itemBuilder: (ctx, index) {
                                   return ListTile(
                                     onTap: () {
+                                      // if (Storage.currentindex!=-1&&Storage.playingSongs[Storage.currentindex].id!=item.data![index].id) {
+                                      // }
+                                      // Storage.player.play();
+                                      // if (mounted) {
+                                      //   setState(() {});
+                                      // }
+                                      // Navigator.of(context).push(
+                                      //     MaterialPageRoute(
+                                      //         builder: (ctx) => PlayerPage(
+                                      //             playersong: item.data!)));
                                       Storage.player.setAudioSource(
                                           Storage.createSongList(item.data!),
                                           initialIndex: index);
-                                      Storage.player.play();
-                                      if (mounted) {
-                                        setState(() {});
+                                      if (Storage.currentindex != index &&
+                                          mounted) {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (ctx) => PlayerPage(
+                                                    playersong: item.data!)));
+                                        Storage.player.play();
+                                      } else {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    PlayerPage(
+                                                        playersong:
+                                                            item.data!)));
                                       }
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (ctx) => PlayerPage(
-                                                  playersong: item.data!)));
-                                      // if (Storage.currentindex != index &&
-                                      //     mounted) {
-                                      //   Navigator.of(context).push(
-                                      //       MaterialPageRoute(
-                                      //           builder: (ctx) => PlayerPage(
-                                      //               playersong: item.data!)));
-                                      //   Storage.player.play();
-                                      //   setState(() {});
-                                      // } else {
-                                      //   Navigator.of(context).push(
-                                      //       MaterialPageRoute(
-                                      //           builder: (context) =>
-                                      //               PlayerPage(
-                                      //                   playersong:
-                                      //                       item.data!)));
-                                      //   Storage.player.play();
-                                      //   setState(() {});
-                                      // }
-                                      // setState(() {});
+                                      setState(() {});
                                     },
                                     iconColor: Colors.white,
                                     textColor: Colors.white,

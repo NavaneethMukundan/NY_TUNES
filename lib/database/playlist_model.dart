@@ -3,7 +3,7 @@ part 'playlist_model.g.dart';
 
 @HiveType(typeId: 1)
 class MusicModel extends HiveObject {
-  int? id;
+  // int? id;
 
   @HiveField(0)
   String name;
@@ -11,7 +11,7 @@ class MusicModel extends HiveObject {
   @HiveField(1)
   List<int> songData;
 
-  MusicModel({required this.name, this.id, required this.songData});
+  MusicModel({required this.name, required this.songData});
 
   add(int id) async {
     songData.add(id);
