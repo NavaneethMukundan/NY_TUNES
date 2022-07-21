@@ -78,10 +78,12 @@ class _FavoritePageState extends State<FavoritePage> {
                                             ...favorData
                                           ];
                                           setState(() {});
+                                          Storage.player.stop();
                                           Storage.player.setAudioSource(
                                               Storage.createSongList(newlist),
                                               initialIndex: index);
-                                          Storage.player.play();
+                                          //Storage.player.play();
+                                          Storage.currentindex = index;
                                           Navigator.of(context).push(
                                               MaterialPageRoute(
                                                   builder: (ctx) => PlayerPage(
