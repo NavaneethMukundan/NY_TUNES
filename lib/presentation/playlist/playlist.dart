@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ny_tunes/database/playlist_database.dart';
-import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/pages/playlist_search.dart';
-import 'package:ny_tunes/pages/playlist_songs.dart';
+import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/presentation/playlist/widgets/playlist_search.dart';
+import 'package:ny_tunes/presentation/playlist/widgets/playlist_songs.dart';
+import 'package:ny_tunes/state_managment/provider/main_functions/main_functions.dart';
+import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
+import 'package:provider/provider.dart';
 
-class PlaylistPage extends StatefulWidget {
+class PlaylistPage extends StatelessWidget {
   const PlaylistPage({
     Key? key,
   }) : super(key: key);
-  @override
-  State<PlaylistPage> createState() => _PlaylistPageState();
-}
 
-final nameController = TextEditingController();
-
-class _PlaylistPageState extends State<PlaylistPage> {
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PlaylistDatabase>(context, listen: false);
+    provider.getAllDetails();
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -86,7 +84,10 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                               height: 60,
                                             ),
                                             TextFormField(
-                                                controller: nameController,
+                                                controller: Provider.of<
+                                                            PlaylistFunctionController>(
+                                                        context)
+                                                    .nameController,
                                                 decoration:
                                                     const InputDecoration(
                                                         border:
@@ -112,9 +113,11 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                             primary:
                                                                 Colors.teal),
                                                     onPressed: () {
-                                                      whenButtonClicked();
-                                                      Navigator.of(context)
-                                                          .pop();
+                                                      Provider.of<PlaylistFunctionController>(
+                                                              context,
+                                                              listen: false)
+                                                          .whenButtonClicked(
+                                                              context);
                                                     },
                                                     child: const Text('Save')))
                                           ],
@@ -148,17 +151,17 @@ class _PlaylistPageState extends State<PlaylistPage> {
                 const SizedBox(
                   height: 50,
                 ),
-                ValueListenableBuilder(
-                  valueListenable:
-                      Hive.box<MusicModel>('playlist').listenable(),
-                  builder: (BuildContext context, Box<MusicModel> playlistDb,
-                      Widget? child) {
+                Consumer<PlaylistDatabase>(
+                  builder: (context, playlistDb, child) {
+                    Hive.box<MusicModel>('playlist').listenable();
                     return ListView.separated(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         scrollDirection: Axis.vertical,
                         itemBuilder: (ctx, index) {
-                          final data = playlistDb.values.toList()[index];
+                          final data =
+                              playlistDb.musicListNotifier.toList()[index];
+                          // playlistDb.musicListNotifier.toList()[index];
                           return ListTile(
                             leading: Image.asset(
                                 'Assets/images/defaultPlaylistImage-removebg-preview.png'),
@@ -214,8 +217,9 @@ class _PlaylistPageState extends State<PlaylistPage> {
                                                                   primary: Colors
                                                                       .transparent),
                                                           onPressed: () {
-                                                            deletePlaylist(
-                                                                index);
+                                                            provider
+                                                                .deletePlaylist(
+                                                                    index);
                                                             Navigator.of(
                                                                     context)
                                                                 .pop();
@@ -267,7 +271,7 @@ class _PlaylistPageState extends State<PlaylistPage> {
                         separatorBuilder: (ctx, index) {
                           return const Divider();
                         },
-                        itemCount: playlistDb.length);
+                        itemCount: playlistDb.musicListNotifier.length);
                   },
                 ),
               ],
@@ -276,15 +280,5 @@ class _PlaylistPageState extends State<PlaylistPage> {
         ),
       ),
     );
-  }
-
-  Future<void> whenButtonClicked() async {
-    final name = nameController.text.trim();
-    if (name.isEmpty) {
-      return;
-    } else {
-      final music = MusicModel(name: name, songData: []);
-      addPlaylist(music);
-    }
   }
 }
