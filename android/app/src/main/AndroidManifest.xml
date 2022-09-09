@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.ny_tunes">
+    package="com.fouvty.ny_tunes">
      <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
      <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
    <application
-        android:label="ny_tunes"
+        android:label="NY Tunes"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

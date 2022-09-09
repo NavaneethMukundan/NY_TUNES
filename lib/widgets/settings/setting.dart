@@ -1,19 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/settings/about.dart';
-import 'package:ny_tunes/settings/privacy_policy.dart';
-import 'package:ny_tunes/splash.dart';
+import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/widgets/others/splash.dart';
+import 'package:ny_tunes/widgets/settings/about.dart';
 import 'package:share_plus/share_plus.dart';
 
-class SettingPage extends StatefulWidget {
+class SettingPage extends StatelessWidget {
   const SettingPage({Key? key}) : super(key: key);
 
-  @override
-  State<SettingPage> createState() => _SettingPageState();
-}
-
-class _SettingPageState extends State<SettingPage> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -83,28 +77,28 @@ class _SettingPageState extends State<SettingPage> {
                 const Divider(
                   thickness: 1,
                 ),
-                TextButton.icon(
-                    onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (ctx) => const PrivacyPolicy()));
-                    },
-                    icon: const Icon(
-                      Icons.privacy_tip_outlined,
-                      color: Color.fromARGB(255, 222, 220, 220),
-                      size: 30,
-                    ),
-                    label: const Text(
-                      'Privacy Policy',
-                      style: TextStyle(
-                          color: Color.fromARGB(255, 222, 220, 220),
-                          fontSize: 20),
-                    )),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Divider(
-                  thickness: 1,
-                ),
+                // TextButton.icon(
+                //     onPressed: () {
+                //       Navigator.of(context).push(MaterialPageRoute(
+                //           builder: (ctx) => const PrivacyPolicy()));
+                //     },
+                //     icon: const Icon(
+                //       Icons.privacy_tip_outlined,
+                //       color: Color.fromARGB(255, 222, 220, 220),
+                //       size: 30,
+                //     ),
+                //     label: const Text(
+                //       'Privacy Policy',
+                //       style: TextStyle(
+                //           color: Color.fromARGB(255, 222, 220, 220),
+                //           fontSize: 20),
+                //     )),
+                // const SizedBox(
+                //   height: 15,
+                // ),
+                // const Divider(
+                //   thickness: 1,
+                // ),
                 TextButton.icon(
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -129,7 +123,7 @@ class _SettingPageState extends State<SettingPage> {
                 ),
                 TextButton.icon(
                     onPressed: () {
-                      clearDatabase();
+                      clearDatabase(context);
                     },
                     icon: const Icon(
                       Icons.restart_alt_rounded,
@@ -168,13 +162,14 @@ class _SettingPageState extends State<SettingPage> {
   void _onShareData(BuildContext context) async {
     final box = context.findRenderObject() as RenderBox;
     {
-      await Share.share('PlayStore Link will Be Avilable Soon ',
+      await Share.share(
+          'https://play.google.com/store/apps/details?id=com.fouvty.ny_tunes',
           subject: 'Share NY Tunes',
           sharePositionOrigin: box.localToGlobal(Offset.zero) & box.size);
     }
   }
 
-  void clearDatabase() {
+  void clearDatabase(context) {
     AlertDialog alert = AlertDialog(
       title: const Text("Alert !"),
       content: const Text("Would you like to Reset Yout App?"),

@@ -1,22 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/navigation.dart';
+import 'package:ny_tunes/widgets/others/navigation.dart';
 
-class SplashScreen extends StatefulWidget {
+class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplashScreen> createState() => _SplashScreenState();
-}
-
-class _SplashScreenState extends State<SplashScreen> {
-  @override
-  void initState() {
-    gotoHome();
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      gotoHome(context);
+    });
     return Scaffold(
       body: Container(
           height: double.infinity,
@@ -42,12 +34,9 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-  Future<void> gotoHome() async {
+  Future<void> gotoHome(context) async {
     await Future.delayed(const Duration(seconds: 2));
-    if (!mounted) {
-      return;
-    }
-    Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (ctx) => const NavigationPage()));
+    Navigator.of(context)
+        .pushReplacement(MaterialPageRoute(builder: (ctx) => NavigationPage()));
   }
 }

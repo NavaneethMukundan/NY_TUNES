@@ -1,28 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/adapters.dart';
-import 'package:ny_tunes/database/favorite_btn.dart';
-import 'package:ny_tunes/database/playlist_database.dart';
-import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/pages/player.dart';
-import 'package:ny_tunes/pages/song_adding.dart';
-import 'package:ny_tunes/storage.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:ny_tunes/database/Favorite_Button/favorite_btn.dart';
+import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/presentation/widgets/player.dart';
+import 'package:ny_tunes/presentation/widgets/song_adding.dart';
+import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
+import 'package:ny_tunes/widgets/others/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class PlaylistData extends StatefulWidget {
-  const PlaylistData(
-      {Key? key, required this.playlist, required this.folderindex})
+class PlaylistData extends StatelessWidget {
+  PlaylistData({Key? key, required this.playlist, required this.folderindex})
       : super(key: key);
   final MusicModel playlist;
   final int folderindex;
-  @override
-  State<PlaylistData> createState() => _PlaylistDataState();
-}
-
-class _PlaylistDataState extends State<PlaylistData> {
   late List<SongModel> playlistsong;
   @override
   Widget build(BuildContext context) {
-    getAllDetails();
+    final provider = Provider.of<PlaylistDatabase>(context, listen: false);
+    provider.getAllDetails();
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -58,7 +54,7 @@ class _PlaylistDataState extends State<PlaylistData> {
                   height: 150,
                   color: Colors.teal,
                 ),
-                Text(widget.playlist.name,
+                Text(playlist.name,
                     style: const TextStyle(
                         color: Colors.white,
                         fontSize: 30,
@@ -69,17 +65,15 @@ class _PlaylistDataState extends State<PlaylistData> {
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (ctx) => SongListPage(
-                                playlist: widget.playlist,
+                                playlist: playlist,
                               )));
                     },
                     child: const Text('Add Songs')),
-                ValueListenableBuilder(
-                  valueListenable:
-                      Hive.box<MusicModel>('playlist').listenable(),
-                  builder: (BuildContext context, Box<MusicModel> value,
-                      Widget? child) {
+                Consumer<PlaylistDatabase>(
+                  builder: (context, value, child) {
+                    Hive.box<MusicModel>('playlist').listenable();
                     playlistsong = listPlaylist(
-                        value.values.toList()[widget.folderindex].songData);
+                        value.musicListNotifier.toList()[folderindex].songData);
 
                     return ListView.separated(
                         shrinkWrap: true,
@@ -101,7 +95,7 @@ class _PlaylistDataState extends State<PlaylistData> {
                                 id: playlistsong[index].id,
                                 type: ArtworkType.AUDIO,
                                 errorBuilder: (context, excepion, gdb) {
-                                  setState(() {});
+                                  provider.notifyListeners();
                                   return Image.asset('');
                                 },
                               ),
@@ -192,11 +186,12 @@ class _PlaylistDataState extends State<PlaylistData> {
                                                                     primary: Colors
                                                                         .transparent),
                                                             onPressed: () {
-                                                              widget.playlist
-                                                                  .deleteData(
-                                                                      playlistsong[
-                                                                              index]
-                                                                          .id);
+                                                              playlist.deleteData(
+                                                                  playlistsong[
+                                                                          index]
+                                                                      .id);
+                                                              provider
+                                                                  .notifyListeners();
                                                               Navigator.of(
                                                                       context)
                                                                   .pop();

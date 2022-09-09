@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/database/playlist_model.dart';
-import 'package:ny_tunes/pages/home_.dart';
+import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class SongListPage extends StatefulWidget {
-  const SongListPage({Key? key, required this.playlist}) : super(key: key);
+class SongListPage extends StatelessWidget {
+  SongListPage({Key? key, required this.playlist}) : super(key: key);
 
   final MusicModel playlist;
-  @override
-  State<SongListPage> createState() => _SongListPageState();
-}
 
-class _SongListPageState extends State<SongListPage> {
+  final audioQuery = OnAudioQuery();
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PlaylistDatabase>(context);
     return Container(
         height: double.infinity,
         width: double.infinity,
@@ -51,7 +51,6 @@ class _SongListPageState extends State<SongListPage> {
                         IconButton(
                             onPressed: () {
                               Navigator.of(context).pop();
-                              setState(() {});
                             },
                             icon: const Icon(
                               Icons.arrow_forward_rounded,
@@ -100,7 +99,9 @@ class _SongListPageState extends State<SongListPage> {
                                   subtitle: Text("${item.data![index].artist}"),
                                   trailing: IconButton(
                                       onPressed: () {
-                                        playlistCheck(item.data![index]);
+                                        playlistCheck(
+                                            item.data![index], context);
+                                        provider.notifyListeners();
                                         //musicListNotifier.notifyListeners();
                                       },
                                       icon: const Icon(Icons.add)),
@@ -117,9 +118,9 @@ class _SongListPageState extends State<SongListPage> {
             )));
   }
 
-  void playlistCheck(SongModel data) {
-    if (!widget.playlist.isValueIn(data.id)) {
-      widget.playlist.add(data.id);
+  void playlistCheck(SongModel data, context) {
+    if (!playlist.isValueIn(data.id)) {
+      playlist.add(data.id);
       const snackbar = SnackBar(
           backgroundColor: Colors.black,
           content: Text(

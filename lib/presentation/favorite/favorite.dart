@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/database/favorite_btn.dart';
-import 'package:ny_tunes/database/favorite_db.dart';
-import 'package:ny_tunes/pages/player.dart';
-import 'package:ny_tunes/storage.dart';
+import 'package:ny_tunes/database/Favorite_Button/favorite_btn.dart';
+import 'package:ny_tunes/presentation/widgets/player.dart';
+import 'package:ny_tunes/state_managment/provider/main_functions/widgets/favorite_db_functions.dart';
+import 'package:ny_tunes/widgets/others/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
+import 'package:provider/provider.dart';
 
-class FavoritePage extends StatefulWidget {
+class FavoritePage extends StatelessWidget {
   const FavoritePage({
     Key? key,
   }) : super(key: key);
 
   @override
-  State<FavoritePage> createState() => _FavoritePageState();
-}
-
-class _FavoritePageState extends State<FavoritePage> {
-  @override
   Widget build(BuildContext context) {
+    final provider =
+        Provider.of<FavoriteFunctionController>(context, listen: false);
     return Container(
       height: double.infinity,
       width: double.infinity,
@@ -55,7 +53,7 @@ class _FavoritePageState extends State<FavoritePage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 20),
-                    child: Favorite.favoriteSong.value.isEmpty
+                    child: provider.favoriteSongs.isEmpty
                         ? const Center(
                             child: Text(
                               'No Song Found',
@@ -63,10 +61,8 @@ class _FavoritePageState extends State<FavoritePage> {
                                   TextStyle(color: Colors.white, fontSize: 15),
                             ),
                           )
-                        : ValueListenableBuilder(
-                            valueListenable: Favorite.favoriteSong,
-                            builder: (BuildContext ctx,
-                                List<SongModel> favorData, Widget? child) {
+                        : Consumer<FavoriteFunctionController>(
+                            builder: (context, value, child) {
                               return ListView.separated(
                                   shrinkWrap: true,
                                   physics: const NeverScrollableScrollPhysics(),
@@ -75,9 +71,9 @@ class _FavoritePageState extends State<FavoritePage> {
                                     return ListTile(
                                         onTap: () {
                                           List<SongModel> newlist = [
-                                            ...favorData
+                                            ...value.favoriteSongs
                                           ];
-                                          setState(() {});
+                                          provider.notifyListeners();
                                           Storage.player.stop();
                                           Storage.player.setAudioSource(
                                               Storage.createSongList(newlist),
@@ -90,7 +86,7 @@ class _FavoritePageState extends State<FavoritePage> {
                                                       playersong: newlist)));
                                         },
                                         leading: QueryArtworkWidget(
-                                          id: favorData[index].id,
+                                          id: value.favoriteSongs[index].id,
                                           type: ArtworkType.AUDIO,
                                           errorBuilder:
                                               (context, excepion, gdb) {
@@ -98,23 +94,23 @@ class _FavoritePageState extends State<FavoritePage> {
                                           },
                                         ),
                                         title: Text(
-                                          favorData[index].title,
+                                          value.favoriteSongs[index].title,
                                           style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 15),
                                         ),
                                         subtitle: Text(
-                                          favorData[index].artist!,
+                                          value.favoriteSongs[index].artist!,
                                           style: const TextStyle(
                                               color: Colors.white),
                                         ),
-                                        trailing:
-                                            FavorBtn(song: favorData[index]));
+                                        trailing: FavorBtn(
+                                            song: value.favoriteSongs[index]));
                                   },
                                   separatorBuilder: (ctx, index) {
                                     return const Divider();
                                   },
-                                  itemCount: favorData.length);
+                                  itemCount: value.favoriteSongs.length);
                             },
                           ),
                   )
