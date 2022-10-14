@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/presentation/widgets/player.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/main_functions.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/widgets/favorite_db_functions.dart';
-import 'package:ny_tunes/widgets/others/storage.dart';
-import 'package:ny_tunes/widgets/settings/setting.dart';
+import 'package:ny_tunes/model/Favorite_Button/favorite_btn.dart';
+import 'package:ny_tunes/view/widgets/player.dart';
+import 'package:ny_tunes/controller/provider/main_functions/main_functions.dart';
+import 'package:ny_tunes/controller/provider/main_functions/widgets/favorite_db_functions.dart';
+import 'package:ny_tunes/view/widgets/others/storage.dart';
+import 'package:ny_tunes/view/widgets/settings/setting.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
-import '../../database/Favorite_Button/favorite_btn.dart';
 
 class HomePage extends StatelessWidget {
   HomePage({Key? key}) : super(key: key);

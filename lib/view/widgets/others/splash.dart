@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/widgets/others/navigation.dart';
+import 'package:ny_tunes/view/widgets/others/navigation.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

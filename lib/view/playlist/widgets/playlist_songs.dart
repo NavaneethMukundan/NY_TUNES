@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ny_tunes/database/Favorite_Button/favorite_btn.dart';
-import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
-import 'package:ny_tunes/presentation/widgets/player.dart';
-import 'package:ny_tunes/presentation/widgets/song_adding.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
-import 'package:ny_tunes/widgets/others/storage.dart';
+import 'package:ny_tunes/model/Favorite_Button/favorite_btn.dart';
+
+import 'package:ny_tunes/model/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/view/widgets/player.dart';
+import 'package:ny_tunes/view/widgets/song_adding.dart';
+import 'package:ny_tunes/controller/provider/main_functions/widgets/playlist_db.dart';
+import 'package:ny_tunes/view/widgets/others/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 

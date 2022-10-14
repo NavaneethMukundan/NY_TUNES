@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
-import 'package:ny_tunes/presentation/playlist/widgets/playlist_search.dart';
-import 'package:ny_tunes/presentation/playlist/widgets/playlist_songs.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/main_functions.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
+import 'package:ny_tunes/model/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/view/playlist/widgets/playlist_search.dart';
+import 'package:ny_tunes/view/playlist/widgets/playlist_songs.dart';
+import 'package:ny_tunes/controller/provider/main_functions/main_functions.dart';
+import 'package:ny_tunes/controller/provider/main_functions/widgets/playlist_db.dart';
 import 'package:provider/provider.dart';
 
 class PlaylistPage extends StatelessWidget {
@@ -167,84 +167,7 @@ class PlaylistPage extends StatelessWidget {
                                 'Assets/images/defaultPlaylistImage-removebg-preview.png'),
                             trailing: IconButton(
                                 onPressed: () {
-                                  showModalBottomSheet(
-                                      backgroundColor: Colors.transparent,
-                                      context: context,
-                                      builder: (builder) {
-                                        return Container(
-                                          decoration: const BoxDecoration(
-                                              gradient: LinearGradient(
-                                                  begin: Alignment.topCenter,
-                                                  end: Alignment.bottomCenter,
-                                                  colors: [
-                                                    Color.fromARGB(
-                                                        255, 1, 105, 94),
-                                                    Colors.black,
-                                                    Colors.black,
-                                                  ]),
-                                              borderRadius: BorderRadius.only(
-                                                  topLeft:
-                                                      Radius.circular(25.0),
-                                                  topRight:
-                                                      Radius.circular(25.0))),
-                                          child: SizedBox(
-                                            height: 300,
-                                            child: Column(
-                                              children: [
-                                                Image.asset(
-                                                  'Assets/images/defaultPlaylistImage-removebg-preview.png',
-                                                  height: 150,
-                                                ),
-                                                Text(
-                                                  data.name,
-                                                  style: const TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Padding(
-                                                  padding:
-                                                      const EdgeInsets.only(
-                                                          top: 30),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.start,
-                                                    children: [
-                                                      ElevatedButton.icon(
-                                                          style: ElevatedButton
-                                                              .styleFrom(
-                                                                  primary: Colors
-                                                                      .transparent),
-                                                          onPressed: () {
-                                                            provider
-                                                                .deletePlaylist(
-                                                                    index);
-                                                            Navigator.of(
-                                                                    context)
-                                                                .pop();
-                                                          },
-                                                          icon: const Icon(
-                                                            Icons
-                                                                .delete_outline_outlined,
-                                                            size: 25,
-                                                          ),
-                                                          label: const Text(
-                                                            'Remove Playlist',
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 20,
-                                                            ),
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        );
-                                      });
+                                  BottomSheet(context, data, provider, index);
                                 },
                                 icon: const Icon(
                                   Icons.more_vert_sharp,
@@ -280,5 +203,86 @@ class PlaylistPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<dynamic> BottomSheet(BuildContext context, MusicModel data, PlaylistDatabase provider, int index) {
+    return showModalBottomSheet(
+                                    backgroundColor: Colors.transparent,
+                                    context: context,
+                                    builder: (builder) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                            gradient: LinearGradient(
+                                                begin: Alignment.topCenter,
+                                                end: Alignment.bottomCenter,
+                                                colors: [
+                                                  Color.fromARGB(
+                                                      255, 1, 105, 94),
+                                                  Colors.black,
+                                                  Colors.black,
+                                                ]),
+                                            borderRadius: BorderRadius.only(
+                                                topLeft:
+                                                    Radius.circular(25.0),
+                                                topRight:
+                                                    Radius.circular(25.0))),
+                                        child: SizedBox(
+                                          height: 300,
+                                          child: Column(
+                                            children: [
+                                              Image.asset(
+                                                'Assets/images/defaultPlaylistImage-removebg-preview.png',
+                                                height: 150,
+                                              ),
+                                              Text(
+                                                data.name,
+                                                style: const TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 20,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.only(
+                                                        top: 30),
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.start,
+                                                  children: [
+                                                    ElevatedButton.icon(
+                                                        style: ElevatedButton
+                                                            .styleFrom(
+                                                                primary: Colors
+                                                                    .transparent),
+                                                        onPressed: () {
+                                                          provider
+                                                              .deletePlaylist(
+                                                                  index);
+                                                          Navigator.of(
+                                                                  context)
+                                                              .pop();
+                                                        },
+                                                        icon: const Icon(
+                                                          Icons
+                                                              .delete_outline_outlined,
+                                                          size: 25,
+                                                        ),
+                                                        label: const Text(
+                                                          'Remove Playlist',
+                                                          style: TextStyle(
+                                                            color:
+                                                                Colors.white,
+                                                            fontSize: 20,
+                                                          ),
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    });
   }
 }

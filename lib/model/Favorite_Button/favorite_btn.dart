@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/widgets/favorite_db_functions.dart';
+import 'package:ny_tunes/controller/provider/main_functions/widgets/favorite_db_functions.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
