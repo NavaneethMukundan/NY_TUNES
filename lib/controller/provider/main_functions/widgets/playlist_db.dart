@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/model/Playlist_Model/playlist_model.dart';
 
 class PlaylistDatabase with ChangeNotifier {
   List<MusicModel> musicListNotifier = [];

@@ -1,9 +1,9 @@
 import 'package:audio_video_progress_bar/audio_video_progress_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:ny_tunes/database/Favorite_Button/favorite_btn.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/main_functions.dart';
-import 'package:ny_tunes/widgets/others/storage.dart';
+import 'package:ny_tunes/controller/provider/main_functions/main_functions.dart';
+import 'package:ny_tunes/model/Favorite_Button/favorite_btn.dart';
+import 'package:ny_tunes/view/widgets/others/storage.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 import 'package:rxdart/rxdart.dart';

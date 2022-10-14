@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/adapters.dart';
-import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
-import 'package:ny_tunes/widgets/others/splash.dart';
-import 'package:ny_tunes/widgets/settings/about.dart';
+import 'package:ny_tunes/model/Playlist_Model/playlist_model.dart';
+import 'package:ny_tunes/view/widgets/others/splash.dart';
+import 'package:ny_tunes/view/widgets/settings/about.dart';
 import 'package:share_plus/share_plus.dart';
 
 class SettingPage extends StatelessWidget {

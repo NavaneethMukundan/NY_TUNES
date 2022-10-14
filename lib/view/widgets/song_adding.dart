@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:ny_tunes/database/Playlist_Model/playlist_model.dart';
-import 'package:ny_tunes/state_managment/provider/main_functions/widgets/playlist_db.dart';
+import 'package:ny_tunes/controller/provider/main_functions/widgets/playlist_db.dart';
+import 'package:ny_tunes/model/Playlist_Model/playlist_model.dart';
 import 'package:on_audio_query/on_audio_query.dart';
 import 'package:provider/provider.dart';
 
